@@ -2,20 +2,27 @@ name: ujikom_app
 version: 1.0.0+1
 publish_to: none
 description: A new Flutter project.
-environment: 
-  sdk: '>=2.19.2 <3.0.0'
+environment:
+  sdk: ">=2.19.2 <3.0.0"
 
-dependencies: 
+dependencies:
   cupertino_icons: ^1.0.2
   get: 4.6.5
-  flutter: 
+  dio: ^5.0.0
+  get_storage: ^2.0.3
+  google_fonts: ^4.0.3
+  hexcolor: ^3.0.1
+  http: ^0.13.5
+  lottie: ^2.2.0
+  flutter:
     sdk: flutter
 
-dev_dependencies: 
+dev_dependencies:
   flutter_lints: 2.0.1
-  flutter_test: 
+  flutter_test:
     sdk: flutter
 
-flutter: 
+flutter:
+  assets:
+    - assets/img/
   uses-material-design: true
-
