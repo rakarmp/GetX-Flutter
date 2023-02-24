@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lottie/lottie.dart';
-import 'package:ujikom_app/app/modules/home/views/home_view.dart';
 
+import '../../../data/headline_response.dart';
 import '../controllers/dashboard_controller.dart';
 
 class DashboardView extends GetView<DashboardController> {
@@ -12,17 +12,15 @@ class DashboardView extends GetView<DashboardController> {
 
   final authToken = GetStorage();
 
-  void logoutNow() async {
-    authToken.remove('token');
-    Get.offAll(const HomeView());
-  }
-
   @override
   Widget build(BuildContext context) {
+    DashboardController controller = Get.put(DashboardController());
+    final ScrollController scrollController = ScrollController();
+
     return SafeArea(
       // Widget SafeArea menempatkan semua konten widget ke dalam area yang aman (safe area) dari layar.
       child: DefaultTabController(
-        length: 3,
+        length: 4,
         // Widget DefaultTabController digunakan untuk mengatur tab di aplikasi.
         child: Scaffold(
           // Widget Scaffold digunakan sebagai struktur dasar aplikasi.
@@ -32,9 +30,6 @@ class DashboardView extends GetView<DashboardController> {
             child: Column(
               // Widget Column adalah widget yang menyatukan widget-childnya secara vertikal.
               children: [
-                IconButton(
-                    onPressed: () => logoutNow(),
-                    icon: const Icon(Icons.logout)),
                 ListTile(
                   // Widget ListTile digunakan untuk menampilkan tampilan list sederhana.
                   title: const Text(
@@ -42,8 +37,8 @@ class DashboardView extends GetView<DashboardController> {
                     textAlign: TextAlign.end,
                     // Properti textAlign digunakan untuk menentukan perataan teks.
                   ),
-                  subtitle: const Text(
-                    "Agung Wahyudi",
+                  subtitle: Text(
+                    '${GetStorage().read('nama')}',
                     textAlign: TextAlign.end,
                     // Properti textAlign digunakan untuk menentukan perataan teks.
                   ),
@@ -79,7 +74,8 @@ class DashboardView extends GetView<DashboardController> {
                       // Properti tabs digunakan untuk menentukan teks yang akan ditampilkan pada masing-masing tab.
                       Tab(text: "Headline"),
                       Tab(text: "Teknologi"),
-                      Tab(text: "Sains"),
+                      Tab(text: "Olahraga"),
+                      Tab(text: "Hiburan"),
                     ],
                   ),
                 ),
@@ -90,9 +86,10 @@ class DashboardView extends GetView<DashboardController> {
             // Widget TabBarView digunakan untuk menampilkan konten yang terkait dengan masing-masing tab.
             children: [
               // Properti children digunakan untuk menentukan konten yang akan ditampilkan pada masing-masing tab.
-              headline(),
+              headline(controller, scrollController),
               Center(child: Text('Berita Teknologi')),
-              Center(child: Text('Berita Sains')),
+              Center(child: Text('Berita Olahraga')),
+              Center(child: Text('Berita Hiburan')),
             ],
           ),
         ),
@@ -101,60 +98,90 @@ class DashboardView extends GetView<DashboardController> {
   }
 }
 
-ListView headline() {
-  return ListView(
-    shrinkWrap:
-        true, // Mengatur agar ListView tidak memakan ruang kosong yang tidak diperlukan
-    children: [
-      Container(
-        // Membuat sebuah container untuk mengandung gambar, judul, dan sumber berita
-        padding: const EdgeInsets.only(
-            top: 5,
-            left: 8,
-            right: 8,
-            bottom: 5), // Mengatur padding di dalam container
-        height: 110, // Mengatur tinggi container
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment
-              .start, // Mengatur tata letak anak-anak dalam row secara vertikal di awal
-          children: [
-            ClipRRect(
-              borderRadius:
-                  BorderRadius.circular(8.0), // Mengatur radius border gambar
-              child: Image.network(
-                'https://picsum.photos/100', // Mengambil gambar dari url
-              ),
+FutureBuilder<HeadlineResponse> headline(
+    DashboardController controller, ScrollController scrollController) {
+  return FutureBuilder<HeadlineResponse>(
+    // Mendapatkan future data headline dari controller
+    future: controller.getHeadline(),
+    builder: (context, snapshot) {
+      // Jika koneksi masih dalam keadaan waiting/tunggu, tampilkan widget Lottie loading
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return Center(
+          child: Lottie.network(
+            // Menggunakan animasi Lottie untuk tampilan loading
+            'https://gist.githubusercontent.com/olipiskandar/4f08ac098c81c32ebc02c55f5b11127b/raw/6e21dc500323da795e8b61b5558748b5c7885157/loading.json',
+            repeat: true,
+            width: MediaQuery.of(context).size.width / 1,
+          ),
+        );
+      }
+      // Jika tidak ada data yang diterima, tampilkan pesan "Tidak ada data"
+      if (!snapshot.hasData) {
+        return const Center(child: Text("Tidak ada data"));
+      }
+
+      // Jika data diterima, tampilkan daftar headline dalam bentuk ListView.Builder
+      return ListView.builder(
+        itemCount: snapshot.data!.data!.length,
+        controller: scrollController,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          // Tampilan untuk setiap item headline dalam ListView.Builder
+          return Container(
+            padding: const EdgeInsets.only(
+              top: 5,
+              left: 8,
+              right: 8,
+              bottom: 5,
             ),
-            const SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment
-                    .start, // Mengatur tata letak anak-anak dalam column secara horizontal di awal
-                mainAxisAlignment: MainAxisAlignment
-                    .spaceBetween, // Mengatur tata letak anak-anak dalam column secara vertikal dengan spasi yang sama di antara mereka
-                children: [
-                  const Text(
-                      'Sri Mulyani Kecam Hidup Mewah Pejabat Pajak Buntut Kasus Rubicon - CNN Indonesia'), // Menampilkan judul berita
-                  const SizedBox(
-                    height: 2,
+            height: 110,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Widget untuk menampilkan gambar headline dengan menggunakan url gambar dari data yang diterima
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: Image.network(
+                    snapshot.data!.data![index].urlToImage.toString(),
+                    height: 130,
+                    width: 130,
+                    fit: BoxFit.cover,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment
-                        .start, // Mengatur tata letak anak-anak dalam column secara horizontal di awal
-                    children: const [
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Widget untuk menampilkan judul headline dengan menggunakan data yang diterima
                       Text(
-                          'Author : Muhammad Azwar'), // Menampilkan nama penulis berita
-                      Text('Sumber : detik.com'), // Menampilkan sumber berita
+                        snapshot.data!.data![index].title.toString(),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      ),
+                      const SizedBox(
+                        height: 2,
+                      ),
+                      // Widget untuk menampilkan informasi author dan sumber headline dengan menggunakan data yang diterima
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                              'Author : ${snapshot.data!.data![index].author}'),
+                          Text('Sumber :${snapshot.data!.data![index].name}'),
+                        ],
+                      ),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
-    ],
+          );
+        },
+      );
+    },
   );
 }
