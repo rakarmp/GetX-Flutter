@@ -10,9 +10,10 @@ import '../../../utils/api.dart';
 class LoginController extends GetxController {
   //TODO: Implement LoginController
 
+  // // final _getConnect = GetConnect();
+  // final client = http.Client();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  final authToken = GetStorage();
 
   @override
   void onInit() {
@@ -32,38 +33,72 @@ class LoginController extends GetxController {
   }
 
   void loginNow() async {
+    final client = http.Client();
+    final authToken = GetStorage();
     try {
-      final response = await http.post(Uri.parse(BaseUrl.auth), body: {
-        'email': emailController.text,
-        'password': passwordController.text,
-      });
-      final data = json.decode(response.body);
+      final response = await client.post(
+        Uri.parse(BaseUrl.auth),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'email': emailController.text,
+          'password': passwordController.text,
+        }),
+      );
 
-      if (response.statusCode == 200 && data['success'] == true) {
-        authToken.write('token', data['access_token']);
-        Get.offAll(() => const DashboardView());
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        if (jsonResponse['success'] == true) {
+          authToken.write('token', jsonResponse['access_token']);
+          Get.offAll(() => const DashboardView());
+        } else {
+          Get.snackbar(
+            'Error',
+            jsonResponse['message'].toString(),
+            icon: const Icon(Icons.error),
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            forwardAnimationCurve: Curves.bounceIn,
+            margin: const EdgeInsets.only(
+              top: 10,
+              left: 5,
+              right: 5,
+            ),
+          );
+        }
       } else {
         Get.snackbar(
           'Error',
-          data['message'].toString(),
+          'Failed to login. Please try again.',
           icon: const Icon(Icons.error),
           backgroundColor: Colors.red,
           colorText: Colors.white,
           forwardAnimationCurve: Curves.bounceIn,
-          margin: const EdgeInsets.only(top: 10, left: 5, right: 5),
+          margin: const EdgeInsets.only(
+            top: 10,
+            left: 5,
+            right: 5,
+          ),
         );
       }
     } catch (e) {
       print(e.toString());
       Get.snackbar(
         'Error',
-        'Something went wrong',
+        'Failed to login. Please check your internet connection and try again.',
         icon: const Icon(Icons.error),
         backgroundColor: Colors.red,
         colorText: Colors.white,
         forwardAnimationCurve: Curves.bounceIn,
-        margin: const EdgeInsets.only(top: 10, left: 5, right: 5),
+        margin: const EdgeInsets.only(
+          top: 10,
+          left: 5,
+          right: 5,
+        ),
       );
+    } finally {
+      client.close();
     }
   }
 }
