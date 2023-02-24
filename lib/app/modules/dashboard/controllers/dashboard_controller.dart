@@ -1,9 +1,12 @@
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:ujikom_app/app/modules/home/views/home_view.dart';
 
 class DashboardController extends GetxController {
   //TODO: Implement DashboardController
 
-  final count = 0.obs;
+  final authToken = GetStorage();
+
   @override
   void onInit() {
     super.onInit();
@@ -18,6 +21,4 @@ class DashboardController extends GetxController {
   void onClose() {
     super.onClose();
   }
-
-  void increment() => count.value++;
 }

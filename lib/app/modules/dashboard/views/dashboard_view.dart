@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:lottie/lottie.dart';
+import 'package:ujikom_app/app/modules/home/views/home_view.dart';
 
 import '../controllers/dashboard_controller.dart';
 
 class DashboardView extends GetView<DashboardController> {
-  const DashboardView({Key? key}) : super(key: key);
+  DashboardView({Key? key}) : super(key: key);
+
+  final authToken = GetStorage();
+
+  void logoutNow() async {
+    authToken.remove('token');
+    Get.offAll(const HomeView());
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -22,6 +32,9 @@ class DashboardView extends GetView<DashboardController> {
             child: Column(
               // Widget Column adalah widget yang menyatukan widget-childnya secara vertikal.
               children: [
+                IconButton(
+                    onPressed: () => logoutNow(),
+                    icon: const Icon(Icons.logout)),
                 ListTile(
                   // Widget ListTile digunakan untuk menampilkan tampilan list sederhana.
                   title: const Text(

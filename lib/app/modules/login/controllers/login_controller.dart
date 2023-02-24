@@ -10,8 +10,8 @@ import '../../../utils/api.dart';
 class LoginController extends GetxController {
   //TODO: Implement LoginController
 
-  // // final _getConnect = GetConnect();
-  // final client = http.Client();
+  final client = http.Client();
+  final authToken = GetStorage();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -33,21 +33,17 @@ class LoginController extends GetxController {
   }
 
   void loginNow() async {
-    final client = http.Client();
-    final authToken = GetStorage();
     try {
-      final response = await client.post(
-          Uri.https('demo-elearning.smkassalaambandung.sch.id', 'api/login'),
-          body: {
-            'email': emailController.text,
-            'password': passwordController.text,
-          });
+      final response = await client.post(Uri.https(BaseUrl.auth), body: {
+        'email': emailController.text,
+        'password': passwordController.text,
+      });
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
         if (jsonResponse['success'] == true) {
           authToken.write('token', jsonResponse['access_token']);
-          Get.offAll(() => const DashboardView());
+          Get.offAll(() => DashboardView());
         } else {
           Get.snackbar(
             'Error',
