@@ -34,7 +34,7 @@ class LoginController extends GetxController {
 
   void loginNow() async {
     try {
-      final response = await client.post(Uri.https(BaseUrl.auth), body: {
+      final response = await client.post(Uri.https('demo-elearning.smkassalaambandung.sch.id', 'api/login'), body: {
         'email': emailController.text,
         'password': passwordController.text,
       });
