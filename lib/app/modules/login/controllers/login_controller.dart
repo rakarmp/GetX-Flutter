@@ -37,15 +37,11 @@ class LoginController extends GetxController {
     final authToken = GetStorage();
     try {
       final response = await client.post(
-        Uri.parse(BaseUrl.auth),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'email': emailController.text,
-          'password': passwordController.text,
-        }),
-      );
+          Uri.https('demo-elearning.smkassalaambandung.sch.id', 'api/login'),
+          body: {
+            'email': emailController.text,
+            'password': passwordController.text,
+          });
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
