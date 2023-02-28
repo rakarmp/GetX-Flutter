@@ -14,6 +14,7 @@ dependencies:
   hexcolor: ^3.0.1
   http: ^0.13.5
   lottie: ^2.2.0
+  font_awesome_flutter: ^10.4.0
   flutter:
     sdk: flutter
 
