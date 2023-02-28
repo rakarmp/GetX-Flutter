@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lottie/lottie.dart';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ujikom_app/app/modules/home/views/home_view.dart';
 import '../../../data/headline_response.dart';
 import '../../../data/technology_response.dart';
 import '../../../data/sports_response.dart';
 import '../../../data/entertainment_response.dart';
 import '../controllers/dashboard_controller.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class DashboardView extends GetView<DashboardController> {
   DashboardView({Key? key}) : super(key: key);
@@ -23,9 +24,17 @@ class DashboardView extends GetView<DashboardController> {
     return SafeArea(
       // Widget SafeArea menempatkan semua konten widget ke dalam area yang aman (safe area) dari layar.
       child: DefaultTabController(
-        length: 4,
+        length: 5,
         // Widget DefaultTabController digunakan untuk mengatur tab di aplikasi.
         child: Scaffold(
+          floatingActionButton: FloatingActionButton(
+            onPressed: () async {
+              await authToken.erase();
+              Get.offAll(const HomeView());
+            },
+            backgroundColor: Colors.blueGrey,
+            child: const Icon(Icons.logout_sharp),
+          ),
           // Widget Scaffold digunakan sebagai struktur dasar aplikasi.
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(120.0),
@@ -36,12 +45,12 @@ class DashboardView extends GetView<DashboardController> {
                 ListTile(
                   // Widget ListTile digunakan untuk menampilkan tampilan list sederhana.
                   title: const Text(
-                    "Hallo!",
+                    "Welcome !",
                     textAlign: TextAlign.end,
                     // Properti textAlign digunakan untuk menentukan perataan teks.
                   ),
                   subtitle: Text(
-                    '${GetStorage().read('nama')}',
+                    authToken.read('full_name').toString(),
                     textAlign: TextAlign.end,
                     // Properti textAlign digunakan untuk menentukan perataan teks.
                   ),
@@ -79,6 +88,7 @@ class DashboardView extends GetView<DashboardController> {
                       Tab(text: "Teknologi"),
                       Tab(text: "Olahraga"),
                       Tab(text: "Hiburan"),
+                      Tab(text: "Profile")
                     ],
                   ),
                 ),
@@ -92,7 +102,8 @@ class DashboardView extends GetView<DashboardController> {
               headline(controller, scrollController),
               technology(controller, scrollController),
               sports(controller, scrollController),
-              entertainment(controller, scrollController)
+              entertainment(controller, scrollController),
+              profile()
             ],
           ),
         ),
@@ -450,5 +461,74 @@ FutureBuilder<EntertainmentResponse> entertainment(
         },
       );
     },
+  );
+}
+
+SafeArea profile() {
+  return SafeArea(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const SizedBox(height: 20),
+        const CircleAvatar(
+          radius: 70,
+          backgroundColor: Colors.transparent,
+          backgroundImage: NetworkImage(
+              'https://user-images.githubusercontent.com/97999513/221753733-7625e315-f06b-487d-bce4-fa056ed356f2.png'),
+        ),
+        const SizedBox(height: 20),
+        Text(
+          'Visit Me',
+          style: GoogleFonts.acme(
+            fontSize: 24
+          ),
+        ),
+        const SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton(
+              icon: const FaIcon(
+                FontAwesomeIcons.instagram,
+                size: 30,
+              ),
+              onPressed: () {
+                // add twitter url here
+              },
+            ),
+            const SizedBox(width: 20),
+            IconButton(
+              icon: const FaIcon(
+                FontAwesomeIcons.telegram,
+                size: 30,
+              ),
+              onPressed: () {
+                // add linkedin url here
+              },
+            ),
+            const SizedBox(width: 20),
+            IconButton(
+              icon: const FaIcon(
+                FontAwesomeIcons.github,
+                size: 30,
+              ),
+              onPressed: () {
+                // add github url here
+              },
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        // ignore: prefer_const_constructors
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Text(
+            'Hello... Nama Saya Raka Abdi Rmp, Saya Seorang Pelajar Dan Juga Helper, Support, Junior Developer, Saya Memiliki Keahlian Dalam Pengembangan Website Dengan Menggunakan Bahasa Pemrograman Seperti HTML, CSS, Javascript, Dan Saya Juga Cukup Berpengalaman Menggunakan Kerangka Kerja Seperti ReactJS, NextJS, Laravel, Flutter, VueJS, Saya Selalu Suka Fokus Ketika Saya Sedang Mengerjakan Atau Membuat Apapun, Selalu Berlatih Dan Mengasah Skill Dengan Project-project Kecil.',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.acme(fontSize: 17),
+          ),
+        ),
+      ],
+    ),
   );
 }
