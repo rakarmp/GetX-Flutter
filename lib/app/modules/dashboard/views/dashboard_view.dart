@@ -479,7 +479,7 @@ SafeArea profile() {
         const SizedBox(height: 20),
         Text(
           'Visit Me',
-          style: GoogleFonts.acme(
+          style: GoogleFonts.pressStart2p(
             fontSize: 24
           ),
         ),
@@ -525,7 +525,7 @@ SafeArea profile() {
           child: Text(
             'Hello... Nama Saya Raka Abdi Rmp, Saya Seorang Pelajar Dan Juga Helper, Support, Junior Developer, Saya Memiliki Keahlian Dalam Pengembangan Website Dengan Menggunakan Bahasa Pemrograman Seperti HTML, CSS, Javascript, Dan Saya Juga Cukup Berpengalaman Menggunakan Kerangka Kerja Seperti ReactJS, NextJS, Laravel, Flutter, VueJS, Saya Selalu Suka Fokus Ketika Saya Sedang Mengerjakan Atau Membuat Apapun, Selalu Berlatih Dan Mengasah Skill Dengan Project-project Kecil.',
             textAlign: TextAlign.center,
-            style: GoogleFonts.acme(fontSize: 17),
+            style: GoogleFonts.pressStart2p(fontSize: 16),
           ),
         ),
       ],
