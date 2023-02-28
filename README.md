@@ -1,16 +1,13 @@
-# ujikom_app
+# Berita App
 
-A new Flutter project.
+Portal Berita Indonesia
 
-## Getting Started
+## Tentang 
 
-This project is a starting point for a Flutter application.
+Project Flutter Menggunakan Package GetX, Bertujuan Untuk Mengenalkan GetX Sebagai Package Yang Cocok Untuk Aplikasi Kompleks
 
-A few resources to get you started if this is your first Flutter project:
+## Preview 
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Coming Soon
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
