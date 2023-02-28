@@ -1,11 +1,11 @@
 class BaseUrl {
-  static String auth = 'http://127.0.0.1:8000/api/login/';
+  static String auth = 'demo-elearning.smkassalaambandung.sch.id';
   static String headline =
-      'https://gist.githubusercontent.com/olipiskandar/c5ab129676daec5eb7f24be4109a483b/raw/fa2f128af8429cf944094bfc3a4c1bd8a5e635c6/headline.json';
+      'https://gist.githubusercontent.com/olipiskandar/3d4c85f5a29ecf847f0abf3bb00a1c36/raw/ad7fbfae0dd5a8d2c08303f12401a6a2f22bcb52/headline.json';
   static String entertainment =
-      'https://gist.githubusercontent.com/olipiskandar/c5ab129676daec5eb7f24be4109a483b/raw/fa2f128af8429cf944094bfc3a4c1bd8a5e635c6/entertainment.json';
+      'https://gist.githubusercontent.com/olipiskandar/3d4c85f5a29ecf847f0abf3bb00a1c36/raw/ad7fbfae0dd5a8d2c08303f12401a6a2f22bcb52/entertainment.json';
   static String sports =
-      'https://gist.githubusercontent.com/olipiskandar/c5ab129676daec5eb7f24be4109a483b/raw/fa2f128af8429cf944094bfc3a4c1bd8a5e635c6/sports.json';
+      'https://gist.githubusercontent.com/olipiskandar/3d4c85f5a29ecf847f0abf3bb00a1c36/raw/ad7fbfae0dd5a8d2c08303f12401a6a2f22bcb52/sports.json';
   static String technology =
-      'https://gist.githubusercontent.com/olipiskandar/c5ab129676daec5eb7f24be4109a483b/raw/fa2f128af8429cf944094bfc3a4c1bd8a5e635c6/technology.json';
+      'https://gist.githubusercontent.com/olipiskandar/3d4c85f5a29ecf847f0abf3bb00a1c36/raw/ad7fbfae0dd5a8d2c08303f12401a6a2f22bcb52/technology.json';
 }
