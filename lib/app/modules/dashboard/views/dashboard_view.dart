@@ -10,6 +10,7 @@ import '../../../data/sports_response.dart';
 import '../../../data/entertainment_response.dart';
 import '../controllers/dashboard_controller.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DashboardView extends GetView<DashboardController> {
   DashboardView({Key? key}) : super(key: key);
@@ -62,7 +63,7 @@ class DashboardView extends GetView<DashboardController> {
                     height: 50.0,
                     child: Lottie.network(
                       // Widget Lottie.network digunakan untuk menampilkan animasi Lottie dari suatu URL.
-                      'https://gist.githubusercontent.com/olipiskandar/2095343e6b34255dcfb042166c4a3283/raw/d76e1121a2124640481edcf6e7712130304d6236/praujikom_kucing.json',
+                      'https://assets1.lottiefiles.com/packages/lf20_8QH3Blu2Xh.json',
                       fit: BoxFit.cover,
                       // Properti fit digunakan untuk menyesuaikan ukuran konten agar sesuai dengan kontainer.
                     ),
@@ -470,18 +471,22 @@ SafeArea profile() {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const SizedBox(height: 20),
-        const CircleAvatar(
-          radius: 70,
-          backgroundColor: Colors.transparent,
-          backgroundImage: NetworkImage(
-              'https://user-images.githubusercontent.com/97999513/221753733-7625e315-f06b-487d-bce4-fa056ed356f2.png'),
+        // const CircleAvatar(
+        //   radius: 70,
+        //   backgroundColor: Colors.transparent,
+        //   backgroundImage: NetworkImage(
+        //       'https://user-images.githubusercontent.com/97999513/221753733-7625e315-f06b-487d-bce4-fa056ed356f2.png'),
+        // ),
+        SizedBox(
+          width: 150.0,
+          height: 150.0,
+          child: Lottie.network(
+              'https://assets2.lottiefiles.com/packages/lf20_RuPsBY.json'),
         ),
         const SizedBox(height: 20),
         Text(
           'Visit Me',
-          style: GoogleFonts.pressStart2p(
-            fontSize: 24
-          ),
+          style: GoogleFonts.acme(fontSize: 24),
         ),
         const SizedBox(height: 10),
         Row(
@@ -492,18 +497,32 @@ SafeArea profile() {
                 FontAwesomeIcons.instagram,
                 size: 30,
               ),
-              onPressed: () {
-                // add twitter url here
+              onPressed: () async {
+                const url = 'https://www.instagram.com/rakarmp_fja/';
+                // ignore: deprecated_member_use
+                if (await canLaunch(url)) {
+                  // ignore: deprecated_member_use
+                  await launch(url);
+                } else {
+                  throw 'Tidak Bisa Membuka $url';
+                }
               },
             ),
             const SizedBox(width: 20),
             IconButton(
               icon: const FaIcon(
-                FontAwesomeIcons.telegram,
+                FontAwesomeIcons.whatsapp,
                 size: 30,
               ),
-              onPressed: () {
-                // add linkedin url here
+              onPressed: () async {
+                const url = 'https://wa.me/0895416187586';
+                // ignore: deprecated_member_use
+                if (await canLaunch(url)) {
+                  // ignore: deprecated_member_use
+                  await launch(url);
+                } else {
+                  throw 'Tidak Bisa Membuka $url';
+                }
               },
             ),
             const SizedBox(width: 20),
@@ -512,8 +531,15 @@ SafeArea profile() {
                 FontAwesomeIcons.github,
                 size: 30,
               ),
-              onPressed: () {
-                // add github url here
+              onPressed: () async {
+                const url = 'https://github.com/grizz12';
+                // ignore: deprecated_member_use
+                if (await canLaunch(url)) {
+                  // ignore: deprecated_member_use
+                  await launch(url);
+                } else {
+                  throw 'Tidak Bisa Membuka $url';
+                }
               },
             ),
           ],
@@ -525,7 +551,7 @@ SafeArea profile() {
           child: Text(
             'Hello... Nama Saya Raka Abdi Rmp, Saya Seorang Pelajar Dan Juga Helper, Support, Junior Developer, Saya Memiliki Keahlian Dalam Pengembangan Website Dengan Menggunakan Bahasa Pemrograman Seperti HTML, CSS, Javascript, Dan Saya Juga Cukup Berpengalaman Menggunakan Kerangka Kerja Seperti ReactJS, NextJS, Laravel, Flutter, VueJS, Saya Selalu Suka Fokus Ketika Saya Sedang Mengerjakan Atau Membuat Apapun, Selalu Berlatih Dan Mengasah Skill Dengan Project-project Kecil.',
             textAlign: TextAlign.center,
-            style: GoogleFonts.pressStart2p(fontSize: 16),
+            style: GoogleFonts.acme(fontSize: 16),
           ),
         ),
       ],
